@@ -10,11 +10,10 @@ $icon-font-path: "/bower_components/bootstrap-sass-official/vendor/assets/fonts/
 #map-canvas {
         min-height:500px;
         height: 80%;
-        margin: px;
+        min-width:500px;
+        margin: 0px;
         padding: 0px;
       }
-
-
 
 /* Our Styles */
 
