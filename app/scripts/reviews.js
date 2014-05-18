@@ -13,70 +13,233 @@ var explorerReviews = {
     this.initEvents();
   },
   initStyling: function() {
-    this.renderExplorerReviews();
-    this.renderReviewDataSideBar();
+    
 
   },
   initEvents: function() {
     $(".reviewcontent").on("click", explorerReviews.showModal);
     $(".modal-footer").on("click", ".saveReview", this.completeReview);
     $(".previews").on("click", this.showReview);
-    $("")
+    $(".hikingReviews").on("click", this.getHikingReviews);
+    $(".boatingReviews").on("click", this.getBoatingReviews);
+    $(".campingReviews").on("click", this.getCampingReviews);
+    $(".fishingReviews").on("click", this.getFishingReviews);
+    $(".picnicReviews").on("click", this.getPicnicReviews);
+    $(".sightseeingReviews").on("click", this.getSightseeingReviews);
+
     
   },
 
-   showModal: function() {
-      console.log("i hear you");
-      $("#addReview").modal();
+  showHiking: function() {
+    $(".reviewContent").html()
   },
 
   completeReview: function (e) {
     e.preventDefault();
-  console.log("consider this submitted");
+    console.log("consider this submitted");
+    
+    var name = $('.reviewerName').val();
+    var activity = $('.newReviewTitle').val();
+    var ourDate = $('.reviewerDate').val();
+    var email = $('.reviewerEmail').val();
+    var comment = $('.reviewerContent').val();
 
-  
-  var name = $('.reviewerName').val();
-
-  var activity = $('.newReviewTitle').val();
-  
-  var ourDate = $('.reviewerDate').val();
-  
-  var email = $('.reviewerEmail').val();
-  
-  var comment = $('.reviewerContent').val();
-  
     var submittedReview = {
       reviewerName: name,
       activityName: activity,
       reviewDate: ourDate,
       reviewerEmail: email,
       reviewerComment: comment,
-      // relatedActivity: "hiking"
+      relatedActivity: "hiking"
     };
 
   console.log(submittedReview);
 
-$.ajax({
+  $.ajax({
+        url: "http://tiy-fee-rest.herokuapp.com/collections/explorerReviews",
+        type: "POST",
+        data: submittedReview,
+        dataType: "JSON",
+        error: function(jqXHR, status, error) {
+          alert("Something is Wrong" + error);
+        },
+        success: function(data, dataType, jqXHR) {
+         $("#addReview").modal("toggle");
+          console.log("successful");
+
+        }
+      });
+},
+
+getHikingReviews: function() {
+  console.log("working");
+  $.ajax({
       url: "http://tiy-fee-rest.herokuapp.com/collections/explorerReviews",
-      type: "POST",
-      data: submittedReview,
+      type: "GET",
       dataType: "JSON",
       error: function(jqXHR, status, error) {
         alert("Something is Wrong" + error);
       },
       success: function(data, dataType, jqXHR) {
-        console.log("hurray");
-       $("#addReview").modal("hide");
+        console.log("YOU GOT IT NOW RETURN IT");
+
+          var reviewdata = data;
+          console.log(reviewdata);
+
+          var html = '';
+          for (var i = 0; i < reviewdata.length; i++){
+            if(reviewdata[i].activityName== "Hiking") {
+          html += '<li>' + reviewdata[i].activityName + " - " + reviewdata[i].reviewerName + '</li>';
+          }
+        }
+          console.log(html);
+
+         $(".parkpics").html(html);
+
       }
     });
-
 },
-getHikingReviews: function() {},
-getFishingReviews: function() {},
-getBoatingReviews: function() {},
-getCampingReviews: function() {},
-getPicnicReviews: function() {},
-getSightseeingReviews: function() {},
+getFishingReviews: function() {
+  console.log("working");
+  $.ajax({
+      url: "http://tiy-fee-rest.herokuapp.com/collections/explorerReviews",
+      type: "GET",
+      dataType: "JSON",
+      error: function(jqXHR, status, error) {
+        alert("Something is Wrong" + error);
+      },
+      success: function(data, dataType, jqXHR) {
+        console.log("YOU GOT IT NOW RETURN IT");
+
+          var reviewdata = data;
+          console.log(reviewdata);
+
+          var html = '';
+          for (var i = 0; i < reviewdata.length; i++){
+            if(reviewdata[i].activityName== "Fishing") {
+          html += '<li>' + reviewdata[i].activityName + " - " + reviewdata[i].reviewerName + '</li>';
+          }
+        }
+          console.log(html);
+
+         $(".parkpics").html(html);
+
+      }
+    });
+},
+getBoatingReviews: function() {
+  console.log("working");
+  $.ajax({
+      url: "http://tiy-fee-rest.herokuapp.com/collections/explorerReviews",
+      type: "GET",
+      dataType: "JSON",
+      error: function(jqXHR, status, error) {
+        alert("Something is Wrong" + error);
+      },
+      success: function(data, dataType, jqXHR) {
+        console.log("YOU GOT IT NOW RETURN IT");
+
+          var reviewdata = data;
+          console.log(reviewdata);
+
+          var html = '';
+          for (var i = 0; i < reviewdata.length; i++){
+            if(reviewdata[i].activityName== "Boating") {
+          html += '<li>' + reviewdata[i].activityName + " - " + reviewdata[i].reviewerName + '</li>';
+          }
+        }
+          console.log(html);
+
+         $(".parkpics").html(html);
+
+      }
+    });
+},
+
+getCampingReviews: function() {
+  console.log("working");
+  $.ajax({
+      url: "http://tiy-fee-rest.herokuapp.com/collections/explorerReviews",
+      type: "GET",
+      dataType: "JSON",
+      error: function(jqXHR, status, error) {
+        alert("Something is Wrong" + error);
+      },
+      success: function(data, dataType, jqXHR) {
+        console.log("YOU GOT IT NOW RETURN IT");
+
+          var reviewdata = data;
+          console.log(reviewdata);
+
+          var html = '';
+          for (var i = 0; i < reviewdata.length; i++){
+            if(reviewdata[i].activityName== "Camping") {
+          html += '<li>' + reviewdata[i].activityName + " - " + reviewdata[i].reviewerName + '</li>';
+          }
+        }
+          console.log(html);
+
+         $(".parkpics").html(html);
+
+      }
+    });
+},
+getPicnicReviews: function() {
+  console.log("working");
+  $.ajax({
+      url: "http://tiy-fee-rest.herokuapp.com/collections/explorerReviews",
+      type: "GET",
+      dataType: "JSON",
+      error: function(jqXHR, status, error) {
+        alert("Something is Wrong" + error);
+      },
+      success: function(data, dataType, jqXHR) {
+        console.log("YOU GOT IT NOW RETURN IT");
+
+          var reviewdata = data;
+          console.log(reviewdata);
+
+          var html = '';
+          for (var i = 0; i < reviewdata.length; i++){
+            if(reviewdata[i].activityName== "Picnic") {
+          html += '<li>' + reviewdata[i].activityName + " - " + reviewdata[i].reviewerName + '</li>';
+          }
+        }
+          console.log(html);
+
+         $(".parkpics").html(html);
+
+      }
+    });
+},
+getSightseeingReviews: function() {
+  console.log("working");
+  $.ajax({
+      url: "http://tiy-fee-rest.herokuapp.com/collections/explorerReviews",
+      type: "GET",
+      dataType: "JSON",
+      error: function(jqXHR, status, error) {
+        alert("Something is Wrong" + error);
+      },
+      success: function(data, dataType, jqXHR) {
+        console.log("YOU GOT IT NOW RETURN IT");
+
+          var reviewdata = data;
+          console.log(reviewdata);
+
+          var html = '';
+          for (var i = 0; i < reviewdata.length; i++){
+            if(reviewdata[i].activityName== "Sight Seeing") {
+          html += '<li>' + reviewdata[i].activityName + " - " + reviewdata[i].reviewerName + '</li>';
+          }
+        }
+          console.log(html);
+
+         $(".parkpics").html(html);
+
+      }
+    });
+},
 
 
 showReview: function (e) {
@@ -98,8 +261,7 @@ $.ajax({
 
           var html = '';
           for (var i = 0; i < reviewdata.length; i++){
-          html += '<li>' + reviewdata[i].activityName + " - " + reviewdata[i].reviewerName + reviewdata[i].reviewDate + "-"
-          + reviewdata[i].reviewerEmail + " - " + reviewdata[i].reviewerComment + '</li>';
+          html += '<li>' + reviewdata[i].activityName + " - " + reviewdata[i].reviewerName + '</li>';
           };
           console.log(html);
 
@@ -108,57 +270,23 @@ $.ajax({
       }
     });
 
-},
-
-  // Added So that As Reviews are Entered by Users they will show up on page in the sidebar
-  renderSideBar: function() {
-    $.ajax({
-      url:"http://tiy-fee-rest.herokuapp.com/collections/explorerReviews",
-      type: "GET",
-      dataType: "JSON",
-      error: function(jqXHR, status, error) {
-        alert("error rendering sidebar: " + error);
-      },
-      success: function(data) {
-        var titles = window.titles = _.pluck(data, "title");
-        myReview.render($(".submittedReview"), Templates.sidebarReviews, titles);
-      }
-    });
-
-          var reviewdata = data;
-          console.log(reviewdata);
-
-          var html = '';
-          for (var i = 0; i < reviewdata.length; i++){
-          html += '<li>' + reviewdata[i].activityName + " - " + reviewdata[i].reviewerName + " - " + reviewdata[i].reviewDate + " - "
-          + reviewdata[i].reviewerEmail + " - " + reviewdata[i].reviewerComment + '</li>';
-          };
-          console.log(html);
-
-         $(".parkpics").html(html);
-
-  }
-
-  // Removing Submitted Reviews Section
-  // submittedReview: function() {
+}
+  // removereviewData: function() {
   //   e.preventDefault();
-  //   console.log("I hear You want to remove");
+  //   console.log("this is the remove button");
     
   //   $.ajax({
   //     url: "http://tiy-fee-rest.herokuapp.com/collections/explorerReviews",
   //     type: "DELETE",
-  //     dataType: "JSON",
   //     error: function(jqXHR, status, error) {
   //       alert("something is wrong" + error);
   //     }, 
   //     success: function(data) {
-  //           submittedReview.renderSubmittedReviews();
-  //           submittedReview.renderSideBar();
   //       alert("Nicely Done review deleted");
 
-  //       var $thisReview = $(this).closest("li")
+  //       var $thisReview = $(this).closest("article")
         
-  //       var reviewId = $thisReview.data("");
+  //       var postId = $thisReview.data("");
   //        submittedReview.render();  
          
   //     }
@@ -247,18 +375,18 @@ $.ajax({
 //     });
 
 //   },
-  // renderSideBar: function() {
-  //   $.ajax({
-  //     url:"http://tiy-fee-rest.herokuapp.com/collections/myBlog",
-  //     type: "GET",
-  //     error: function(jqXHR, status, error) {
-  //       alert("error rendering sidebar: " + error);
-  //     },
-  //     success: function(data) {
-  //       var titles = window.titles = _.pluck(data, "title");
-  //       myBlog.render($(".recentPosts"), Templates.sidebarPosts, titles);
-  //     }
-  //   });
+//   renderSideBar: function() {
+//     $.ajax({
+//       url:"http://tiy-fee-rest.herokuapp.com/collections/myBlog",
+//       type: "GET",
+//       error: function(jqXHR, status, error) {
+//         alert("error rendering sidebar: " + error);
+//       },
+//       success: function(data) {
+//         var titles = window.titles = _.pluck(data, "title");
+//         myBlog.render($(".recentPosts"), Templates.sidebarPosts, titles);
+//       }
+//     });
 //   },
 //   addPost: function(e) {
 //     e.preventDefault();
@@ -353,4 +481,3 @@ $.ajax({
 // }
 
 // };
-
