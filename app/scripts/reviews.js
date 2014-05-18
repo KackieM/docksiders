@@ -13,13 +13,15 @@ var explorerReviews = {
     this.initEvents();
   },
   initStyling: function() {
-    
+    this.renderExplorerReviews();
+    this.renderReviewDataSideBar();
 
   },
   initEvents: function() {
     $(".reviewcontent").on("click", explorerReviews.showModal);
     $(".modal-footer").on("click", ".saveReview", this.completeReview);
     $(".previews").on("click", this.showReview);
+    $("")
     
   },
 
@@ -49,7 +51,7 @@ var explorerReviews = {
       reviewDate: ourDate,
       reviewerEmail: email,
       reviewerComment: comment,
-      relatedActivity: "hiking"
+      // relatedActivity: "hiking"
     };
 
   console.log(submittedReview);
@@ -96,7 +98,8 @@ $.ajax({
 
           var html = '';
           for (var i = 0; i < reviewdata.length; i++){
-          html += '<li>' + reviewdata[i].activityName + " - " + reviewdata[i].reviewerName + '</li>';
+          html += '<li>' + reviewdata[i].activityName + " - " + reviewdata[i].reviewerName + reviewdata[i].reviewDate + "-"
+          + reviewdata[i].reviewerEmail + " - " + reviewdata[i].reviewerComment + '</li>';
           };
           console.log(html);
 
@@ -105,23 +108,57 @@ $.ajax({
       }
     });
 
-}
-  // removereviewData: function() {
+},
+
+  // Added So that As Reviews are Entered by Users they will show up on page in the sidebar
+  renderSideBar: function() {
+    $.ajax({
+      url:"http://tiy-fee-rest.herokuapp.com/collections/explorerReviews",
+      type: "GET",
+      dataType: "JSON",
+      error: function(jqXHR, status, error) {
+        alert("error rendering sidebar: " + error);
+      },
+      success: function(data) {
+        var titles = window.titles = _.pluck(data, "title");
+        myReview.render($(".submittedReview"), Templates.sidebarReviews, titles);
+      }
+    });
+
+          var reviewdata = data;
+          console.log(reviewdata);
+
+          var html = '';
+          for (var i = 0; i < reviewdata.length; i++){
+          html += '<li>' + reviewdata[i].activityName + " - " + reviewdata[i].reviewerName + " - " + reviewdata[i].reviewDate + " - "
+          + reviewdata[i].reviewerEmail + " - " + reviewdata[i].reviewerComment + '</li>';
+          };
+          console.log(html);
+
+         $(".parkpics").html(html);
+
+  }
+
+  // Removing Submitted Reviews Section
+  // submittedReview: function() {
   //   e.preventDefault();
-  //   console.log("this is the remove button");
+  //   console.log("I hear You want to remove");
     
   //   $.ajax({
   //     url: "http://tiy-fee-rest.herokuapp.com/collections/explorerReviews",
   //     type: "DELETE",
+  //     dataType: "JSON",
   //     error: function(jqXHR, status, error) {
   //       alert("something is wrong" + error);
   //     }, 
   //     success: function(data) {
+  //           submittedReview.renderSubmittedReviews();
+  //           submittedReview.renderSideBar();
   //       alert("Nicely Done review deleted");
 
-  //       var $thisReview = $(this).closest("article")
+  //       var $thisReview = $(this).closest("li")
         
-  //       var postId = $thisReview.data("");
+  //       var reviewId = $thisReview.data("");
   //        submittedReview.render();  
          
   //     }
@@ -210,18 +247,18 @@ $.ajax({
 //     });
 
 //   },
-//   renderSideBar: function() {
-//     $.ajax({
-//       url:"http://tiy-fee-rest.herokuapp.com/collections/myBlog",
-//       type: "GET",
-//       error: function(jqXHR, status, error) {
-//         alert("error rendering sidebar: " + error);
-//       },
-//       success: function(data) {
-//         var titles = window.titles = _.pluck(data, "title");
-//         myBlog.render($(".recentPosts"), Templates.sidebarPosts, titles);
-//       }
-//     });
+  // renderSideBar: function() {
+  //   $.ajax({
+  //     url:"http://tiy-fee-rest.herokuapp.com/collections/myBlog",
+  //     type: "GET",
+  //     error: function(jqXHR, status, error) {
+  //       alert("error rendering sidebar: " + error);
+  //     },
+  //     success: function(data) {
+  //       var titles = window.titles = _.pluck(data, "title");
+  //       myBlog.render($(".recentPosts"), Templates.sidebarPosts, titles);
+  //     }
+  //   });
 //   },
 //   addPost: function(e) {
 //     e.preventDefault();
