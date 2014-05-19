@@ -13,7 +13,7 @@ var explorerReviews = {
     this.initEvents();
   },
   initStyling: function() {
-    
+    this.render();
 
   },
   initEvents: function() {
@@ -26,8 +26,15 @@ var explorerReviews = {
     $(".fishingReviews").on("click", this.getFishingReviews);
     $(".picnicReviews").on("click", this.getPicnicReviews);
     $(".sightseeingReviews").on("click", this.getSightseeingReviews);
+    // $(".delete").on("click", this.removereviewData);
 
     
+  },
+
+  render: function($el, template, data) {
+    var tmpl = _.template(template, data);
+
+    $el.html(tmpl);
   },
 
   showHiking: function() {
@@ -83,18 +90,16 @@ getHikingReviews: function() {
       success: function(data, dataType, jqXHR) {
         console.log("YOU GOT IT NOW RETURN IT");
 
-          var reviewdata = data;
+          window.reviewdata = data;
           console.log(reviewdata);
 
-          var html = '';
+        
           for (var i = 0; i < reviewdata.length; i++){
             if(reviewdata[i].activityName== "Hiking") {
-          html += '<li>' + reviewdata[i].activityName + " - " + reviewdata[i].reviewerName + '</li>';
+            explorerReviews.render($(".container-previews"),Templates.reviews, reviewdata);
           }
-        }
-          console.log(html);
+        };
 
-         $(".parkpics").html(html);
 
       }
     });
@@ -117,7 +122,7 @@ getFishingReviews: function() {
           var html = '';
           for (var i = 0; i < reviewdata.length; i++){
             if(reviewdata[i].activityName== "Fishing") {
-          html += '<li>' + reviewdata[i].activityName + " - " + reviewdata[i].reviewerName + '</li>';
+          html += '<li>'+ " - " + reviewdata[i].reviewerName + reviewdata[i].reviewerComment + '</li>';
           }
         }
           console.log(html);
@@ -270,29 +275,25 @@ $.ajax({
       }
     });
 
-}
-  // removereviewData: function() {
-  //   e.preventDefault();
-  //   console.log("this is the remove button");
+},
+  removereviewData: function(e) {
+    e.preventDefault();
+    console.log("this is the remove button");
     
-  //   $.ajax({
-  //     url: "http://tiy-fee-rest.herokuapp.com/collections/explorerReviews",
-  //     type: "DELETE",
-  //     error: function(jqXHR, status, error) {
-  //       alert("something is wrong" + error);
-  //     }, 
-  //     success: function(data) {
-  //       alert("Nicely Done review deleted");
+    $.ajax({
+      url: "http://tiy-fee-rest.herokuapp.com/collections/explorerReviews",
+      type: "DELETE",
+      error: function(jqXHR, status, error) {
+        alert("something is wrong" + error);
+      }, 
+      success: function(data) {
+        alert("Nicely Done review deleted");
 
-  //       var $thisReview = $(this).closest("article")
-        
-  //       var postId = $thisReview.data("");
-  //        submittedReview.render();  
-         
-  //     }
-  //   });
-  // }
+     
+    }
+  });
 
+}
 }
 // removePost: function() {
 //     var $thisPost = $(this).closest("article")

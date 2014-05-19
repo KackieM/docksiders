@@ -1,6 +1,5 @@
 $(document).ready(function(){
 
-
 });
 
 $(".typeslots").on("click", "button", getMyLocation);
@@ -11,8 +10,9 @@ function getMyLocation() {
 
 	window.pickedthing = $(this).attr("value");
     console.log(pickedthing);
-	
-	// console.log("i heard you click the map");
+    $(".youradventure").removeClass('hide');
+    $(".listedAdventures").empty();
+
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(displayLocation);
   } else {
@@ -81,17 +81,20 @@ function createMarker(latLng, placeResult) {
     animation: google.maps.Animation.DROP,
     clickable: true
   }
-  //Setting up the marker object to mark the location on the map canvas.
+ 
   var marker = new google.maps.Marker(markerOptions);
+  var marker2 = new google.maps.Marker(markerOptions);
 
   if (placeResult) {
-    var content = placeResult.name+"<br/>"+placeResult.vicinity+"<br/>"+placeResult.types;
+    // html = '';
+
+    var content = '<h4>'+placeResult.name+'</h4><p>'+placeResult.vicinity+'</p>';
     addInfoWindow(marker, latLng, content);
     addResultsList(content);
   }
   else {
     var content = "You are here: " + latLng.lat() + ", " + latLng.lng();
-    addInfoWindow(marker, latLng, content);
+    addInfoWindow(marker2, latLng, content);
   }
 
 }
